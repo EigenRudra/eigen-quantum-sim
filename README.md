@@ -6,7 +6,7 @@ This simulator leverages the **Eigen C++ template library** for highly optimized
 
 PS: No AI tools has been used in generating the code for the core logic of the project :)
 
-## The Physics Under the Hood
+## The Physics behind-the-scenes
 
 This simulator models quantum systems using the **State-Vector** approach. 
 
@@ -70,6 +70,8 @@ QuantumShell> state
 QuantumShell> measure
 ```
 
+![output1](https://github.com/user-attachments/assets/be6f08c6-3f06-4b2f-b197-6d9efc06f000)
+
 ### Example 2: Creating a GHZ State (3-Qubit Entanglement)
 ```text
 Enter no.of qubits (1-10): 3
@@ -80,3 +82,14 @@ QuantumShell> state
 QuantumShell> measure
 ```
 
+![output2](https://github.com/user-attachments/assets/3c304f62-0200-4189-8c63-59fce726b45a)
+
+## Demonstrations
+
+### 5-Qubit Uniform Superposition
+
+![output3](https://github.com/user-attachments/assets/dc3f2207-0bec-4102-8515-c4431eb21d18)
+
+### Phase Kickback and Negative Interference
+
+![output4](https://github.com/user-attachments/assets/89bac087-f0dc-4cb2-b8de-e41f814c425a)
