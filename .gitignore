@@ -1,0 +1,34 @@
+#Prerequisites
+*.d
+
+#Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+#Dynamic Libraries
+*.so
+*.dylib
+*.dll
+
+#Static Libraries
+*.lai
+*.la
+*.a
+*.lib
+
+#Executables
+*.exe
+*.out
+*.app
+
+#OS hidden files
+.DS_Store
+Thumbs.db
+
+#IDE folders
+.vscode/
+.vs/
+.idea/
+quantum_sim
