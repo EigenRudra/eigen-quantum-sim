@@ -106,7 +106,7 @@ public:
 	void measure()
 	{
 		std::vector<double> p(dim);	//Storing the norm (aka prob)
-		int i,bars,hash;
+		int i,hash;
 		double prob;
 		std::cout << "\n--- Quantum Measurement ---\n";
 		for(i=0;i<dim;i++)
