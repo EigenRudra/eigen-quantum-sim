@@ -11,7 +11,7 @@ TARGET = quantum_sim
 
 all: $(TARGET)
 
-$(TARGET): main.cpp
+$(TARGET): main.cpp Quantum.hpp Kronecker.hpp
 	$(CXX) $(CXXFLAGS) -I $(EIGEN_PATH) main.cpp -o $(TARGET)
 
 clean:
