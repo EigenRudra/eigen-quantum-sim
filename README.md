@@ -28,7 +28,8 @@ $$P(x)=|\langle x|\psi\rangle|^2$$
 The simulator calculates this squared norm for every possible state, generates a probability distribution, and uses a random number generator to select the final collapsed state.
 
 ## Files
-* `main.cpp`: Contains the core `Quantum` engine class and the interactive CLI loop.
+* `main.cpp`: Contains the interactive CLI loop and the main execution entry point.
+* `Quantum.hpp`: A modular, header-only library containing the core `Quantum` engine class.
 * `Kronecker.hpp`: Contains the custom, vectorized Kronecker product implementation for Eigen matrices.
 * `Makefile`: Automates the compilation process.
 
