@@ -7,12 +7,13 @@
 #include <iomanip>
 #include <bitset>
 #include <Eigen/Dense>
+#include <Eigen/Sparse>
 #include "Kronecker.hpp" 
 
 using Eigen::Matrix2cd;
-using Eigen::MatrixXcd;
 using Eigen::VectorXcd;
 using namespace std::complex_literals;
+typedef Eigen::SparseMatrix<std::complex<double>> Mtrx;
 
 class Quantum
 {
@@ -21,12 +22,12 @@ private:
 	VectorXcd state;
 	Matrix2cd H,X,Y,Z,S,T,I,P0,P1; //Last 2 are projectors |0><0| & |1><1|
     
-	MatrixXcd expand(const Matrix2cd& gate,int tgt)	//To expand 2x2 gate for 2^n Hilbert space
-	{
-		MatrixXcd op;
+	Mtrx expand(const Matrix2cd& dgate,int tgt)	//To expand 2x2 gate for 2^n Hilbert space, 
+	{						//dgate denotes dense matrix version of gate
+		Mtrx op, gate=dgate.sparseView(), spI=I.sparseView();	//spI denotes sparse version of I matrix
 		for(int i=0;i<n;i++)
 		{
-			MatrixXcd temp=(i==tgt)?gate:I;
+			Mtrx temp=(i==tgt)?gate:spI;
 			if(i==0)
 				op=temp;
 			else
@@ -70,23 +71,23 @@ public:
 			op=S;
 		else if(gate=="t")
 			op=T;
-		state=expand(op,t)*state;
+		state=expand(op,t)*state;	//Sparse Matrix*Dense vector
 	}
 	
 	//CNOT gate
 	void cnot(int control,int target) 
 	{
-        	MatrixXcd t1,t2,op1,op2;
+        	Mtrx t1,t2,op1,op2, spI=I.sparseView(), spP0=P0.sparseView(), spP1=P1.sparseView(), spX=X.sparseView();
         	for(int i=0;i<n;i++)
         	{
-			op1=op2=I;
+			op1=op2=spI;
 			if(i==control)
 			{
-				op1=P0;
-				op2=P1;
+				op1=spP0;
+				op2=spP1;
 			}
 			else if(i==target)
-				op2=X;
+				op2=spX;
 				
 			if(i==0)
 			{
@@ -99,7 +100,7 @@ public:
 				t2=userdefined::Kronecker(t2,op2);
 			}
 		}
-		MatrixXcd cnot=t1+t2;
+		Mtrx cnot=t1+t2;
 		state=cnot*state;
 	}
 
@@ -121,27 +122,36 @@ public:
 		//Printing a hroizontal histogram for visualization
 		for(i=0;i<dim;i++)
 		{
-			std::string bin=std::bitset<16>(i).to_string().substr(16-n);
 			prob=p[i]*100.0;
-			std::cout<<"|"<<bin<<">: [";
-			hash=static_cast<int>(prob/5.0);
-            		for(int j=0;j<20;j++) 
-            		{
-                		if(j<hash) 
-                			std::cout<<"#";
-                		else 
-                			std::cout<<" ";
-            		}
-            		std::cout<<"] "<<std::fixed<<std::setprecision(2)<<prob<<"%\n";
-        	}
-
-		std::cout<<"Collapsed to state: |"<<std::bitset<16>(ms).to_string().substr(16-n)<<">\n";
+			if(prob>0.01)
+			{
+				std::string bin=std::bitset<32>(i).to_string().substr(32-n);
+				std::cout<<"|"<<bin<<">: [";
+				hash=static_cast<int>(prob/5.0);
+            			for(int j=0;j<20;j++) 
+            			{
+                			if(j<hash) 
+                				std::cout<<"#";
+                			else 
+                				std::cout<<" ";
+            			}
+            			std::cout<<"] "<<std::fixed<<std::setprecision(2)<<prob<<"%\n";
+        		}
+		}
+		std::cout<<"Collapsed to state: |"<<std::bitset<32>(ms).to_string().substr(32-n)<<">\n";
 		state=VectorXcd::Zero(dim);
 		state(ms)=1.0;
 	}
 
 	void print()
 	{
-		std::cout << "\nCurrent State Vector:\n" << state << "\n";
+		std::cout<<"\nCurrent State Vector:\n";
+		for(int i=0;i<dim;i++)
+		{
+			std::string bin=std::bitset<32>(i).to_string().substr(32-n);
+			double r=state(i).real(), im=state(i).imag();
+			std::cout<<" |"<<bin<<">  :  " <<std::fixed<<std::setprecision(4)<<r<<(im>=0?" + ":" - ")<<std::abs(im)<<"i\n";
+		}
+	std::cout << "\n";
 	}
 };//end of class

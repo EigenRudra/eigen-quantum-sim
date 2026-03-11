@@ -5,9 +5,9 @@
 int main() 
 {    
 	int n;
-	std::cout<<"Enter no.of qubits (1-10): ";
+	std::cout<<"Enter no.of qubits (1-30): ";
 	std::cin>>n;
-	if(n<=0||n>10)
+	if(n<=0||n>30)
 	{
 		std::cout<<"Invalid Input! No.of qubits should be between 1-10\n";
 		return 1;
