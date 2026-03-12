@@ -74,6 +74,26 @@ public:
 		state=expand(op,t)*state;	//Sparse Matrix*Dense vector
 	}
 	
+	void apply(const std::string& gate, int t, double theta)
+	{
+		Matrix2cd op;
+		double halfAngle=theta/2.0;
+		std::complex<double> c=std::cos(halfAngle);
+		std::complex<double> s=std::sin(halfAngle);
+		if(gate=="rx")
+			op<<c,-1i*s,-1i*s,c;
+		else if(gate=="ry") 
+			op<<c,-s,s,c;
+		else if(gate=="rz")
+			op<<std::exp(-1i*halfAngle),0.0,0.0, std::exp(1i*halfAngle);
+		else 
+		{
+			std::cout << "Error! Invalid parameterized gate.\n";
+			return;
+		}
+		state=expand(op,t)*state;
+	}
+	
 	//CNOT gate
 	void cnot(int control,int target) 
 	{
@@ -119,7 +139,7 @@ public:
 		std::discrete_distribution<> d(p.begin(),p.end());
 		int ms=d(gen);	//Random number for measured state
 		
-		//Printing a hroizontal histogram for visualization
+		//Printing a horizontal histogram for visualization
 		for(i=0;i<dim;i++)
 		{
 			prob=p[i]*100.0;

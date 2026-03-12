@@ -16,16 +16,19 @@ int main()
 	Quantum q(n);
 	std::cout<<"Initialized "<<n<<"-qubit environment in state |0...0>\n";
 	std::cout<<"Available Commands:\n";
-	std::cout<<"  h <target>          (e.g: h 0)\n";
-	std::cout<<"  x <target>          (e.g: x 1)\n";
-	std::cout<<"  y <target>          (e.g: y 1)\n";
-	std::cout<<"  z <target>          (e.g: z 0)\n";
-	std::cout<<"  s <target>          (e.g: s 2)\n";
-	std::cout<<"  t <target>          (e.g: t 0)\n";
-	std::cout<<"  cnot <ctrl> <tgt>   (e.g: cnot 0 1)\n";
-	std::cout<<"  state               (Prints current state vector)\n";
-	std::cout<<"  measure             (Collapses wavefunction and exits)\n";
-	std::cout<<"  exit                (Quits simulator)\n";
+	std::cout<<"  h <target>		(e.g: h 0)\n";
+	std::cout<<"  x <target>		(e.g: x 1)\n";
+	std::cout<<"  y <target>		(e.g: y 1)\n";
+	std::cout<<"  z <target>		(e.g: z 0)\n";
+	std::cout<<"  s <target>		(e.g: s 2)\n";
+	std::cout<<"  t <target>		(e.g: t 0)\n";
+	std::cout<<"  rx <target> <theta>	(e.g: rx 0 3.14159)\n";
+	std::cout<<"  ry <target> <theta>	(e.g: ry 0 1.5708)\n";
+	std::cout<<"  rz <target> <theta>	(e.g: rz 1 0.7853)\n";
+	std::cout<<"  cnot <control> <target>	(e.g: cnot 0 1)\n";
+	std::cout<<"  state			(Prints current state vector)\n";
+	std::cout<<"  measure			(Collapses wavefunction and exits)\n";
+	std::cout<<"  exit			(Quits simulator)\n";
 
 	std::string cmd;
 	do
@@ -57,6 +60,16 @@ int main()
 			std::cin>>t;
 			if(t>=0 && t<n)
 				q.apply(cmd,t);
+			else
+				std::cout<<"Error! Invalid target qubit\n";
+		}
+		else if(cmd=="rx"||cmd=="ry"||cmd=="rz")
+		{
+			int t;
+			double th;
+			std::cin>>t>>th;
+			if(t>=0 && t<n)
+				q.apply(cmd,t,th);
 			else
 				std::cout<<"Error! Invalid target qubit\n";
 		}
