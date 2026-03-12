@@ -174,4 +174,9 @@ public:
 		}
 	std::cout << "\n";
 	}
+	
+	double prob(int index)	//To get probability of specific state without collapsing it
+	{
+        return std::norm(state(index)); 
+	}
 };//end of class
