@@ -32,3 +32,16 @@ Thumbs.db
 .vs/
 .idea/
 quantum_sim
+
+#Compiled Project Binaries
+quantum_shell
+rabi_graph
+bloch_tracker
+
+#Simulation Data
+trajectory.csv
+
+#Python Sandbox
+venv/
+__pycache__/
+*.pyc

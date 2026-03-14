@@ -177,6 +177,26 @@ public:
 	
 	double prob(int index)	//To get probability of specific state without collapsing it
 	{
-        return std::norm(state(index)); 
+        	return std::norm(state(index)); 
+	}
+	
+	double expect(const std::string& axis,int t)	// To calc 3d expectation value <psi|M|psi>
+	{
+		Matrix2cd op;
+		if(axis=="x") 
+			op=X;
+		else if(axis=="y")
+			op=Y;
+		else if(axis=="z")
+			op=Z;
+		else 
+		{
+			std::cout<<"Invalid axis for expectation value!\n";
+			return 0.0;
+		}
+		Mtrx eop=expand(op, t);
+		VectorXcd ket=eop*state;
+		std::complex<double> result=state.adjoint()*ket;
+		return result.real();
 	}
 };//end of class
